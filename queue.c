@@ -1,54 +1,123 @@
 #include "header.h"
 
-int selected_algorithm = 0;
-int time_quantum = 0;
+// ready queue에 프로세스 추가
+void Enqueue_Ready(Process* ready_queue[], int* ready_count, Process* proc) {
+    proc->state = STATE_READY;
+    ready_queue[*ready_count] = proc;
+    (*ready_count)++;
+}
 
-void Config() {
+// ready queue에서 프로세스 꺼내기
+Process* Dequeue_Ready(Process* ready_queue[], int* ready_count, int target_idx) {
+    if (*ready_count == 0) return NULL;
 
-    printf("\n==========================================================\n");
-    printf("          CPU Scheduling Simulator Configuration          \n");
-    printf("==========================================================\n");
-    printf(" 1. FCFS (First Come First Served)\n");
-    printf(" 2. SJF (Shortest Job First) - Non-Preemptive\n");
-    printf(" 3. SJF (Shortest Job First) - Preemptive\n");
-    printf(" 4. Priority Scheduling - Non-Preemptive\n");
-    printf(" 5. Priority Scheduling - Preemptive\n");
-    printf(" 6. RR (Round Robin)\n");
-    printf("==========================================================\n");
-    
-    // 알고리즘 선택
-    while (1) {
-        printf("Enter the algorithm number to perform. (1 ~ 6): ");
-        if (scanf("%d", &selected_algorithm) == 1) {
-            if (selected_algorithm >= 1 && selected_algorithm <= 6) {
-                break; 
-            }
-        }
+    Process* target = ready_queue[target_idx];
 
-        while (getchar() != '\n'); // 입력 버퍼 비움
-        printf("[Invalid input! Please enter a number between 1 and 6.]\n");
+    for (int i = target_idx + 1; i < *ready_count; i++) {
+        ready_queue[i - 1] = ready_queue[i];
     }
+    (*ready_count)--;
 
-    // Round Robin을 선택한 경우
-    if (selected_algorithm == 6) {
-        while (1) {
-            printf("Enter the time quantum for Round Robin. (Recommended: 2 to 5): ");
-            if (scanf("%d", &time_quantum) == 1 && time_quantum > 0) {
-                break;
-            }
+    return target;
+}
 
-            while (getchar() != '\n'); // 입력 버퍼 비움
-            printf("[Invalid input! Please enter a natural number greater than 0.]\n");
+// waiting queue에 프로세스 추가
+void Enqueue_Waiting(Process* waiting_queue[], int* waiting_count, Process* proc) {
+    proc->state = STATE_WAITING;
+    waiting_queue[*waiting_count] = proc;
+    (*waiting_count)++;
+}
+
+// waiting queue에서 i/o 작업이 끝난 프로세스 꺼내기
+void Dequeue_Waiting_Process(Process* waiting_queue[], int* waiting_count, int target_pid) {
+    int target_idx = -1;
+
+    for (int i = 0; i < *waiting_count; i++) {
+        if (waiting_queue[i]->pid == target_pid) {
+            target_idx = i;
+            break;
         }
     }
 
-    printf("[System configuration complete!]\n");
-    if (selected_algorithm == 6) {
-        printf("[Set up Results] Algorithm: Round Robin, Time Quantum: %d sec\n", time_quantum);
-    } 
-    else {
-        const char* algo_names[] = {"", "FCFS", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Preemptive Priority"};
-        printf("[Set up Results] Algorithm: %s\n", algo_names[selected_algorithm]);
+    if (target_idx != -1) {
+        for (int i = target_idx + 1; i < *waiting_count; i++) {
+            waiting_queue[i - 1] = waiting_queue[i];
+        }
+        (*waiting_count)--;
     }
-    printf("==========================================================\n\n");
+}
+
+// FCFS
+// arrival_time -> priority
+int Dequeue_idx_FCFS(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return -1;
+
+    int best_idx = 0;
+
+    for (int i = 1; i < *ready_count; i++) {
+        // arrival_time
+        if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
+            best_idx = i;
+        }
+        // priority
+        else if (ready_queue[i]->arrival_time == ready_queue[best_idx]->arrival_time) {
+            if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
+                best_idx = i;
+            }
+        }
+    }
+
+    return best_idx;
+}
+
+// SJF
+// remaining_cpu -> arrival_time -> priority
+int Dequeue_idx_SJF(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return -1;
+
+    int best_idx = 0;
+
+    for (int i = 1; i < *ready_count; i++) {
+        // remaining_cpu
+        if (ready_queue[i]->remaining_cpu < ready_queue[best_idx]->remaining_cpu) {
+            best_idx = i;
+        }
+        else if (ready_queue[i]->remaining_cpu == ready_queue[best_idx]->remaining_cpu) {
+            // arrival_time
+            if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
+                best_idx = i;
+            }
+            // priority
+            else if (ready_queue[i]->arrival_time == ready_queue[best_idx]->arrival_time) {
+                if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
+                    best_idx = i;
+                }
+            }
+        }
+    }
+
+    return best_idx;
+}
+
+// Priority
+// priority -> arrival_time
+int Dequeue_idx_Priority(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return -1;
+
+    int best_idx = 0;
+
+    for (int i = 1; i < *ready_count; i++) {
+        // priority
+        if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
+            best_idx = i;
+        }
+        // arrival_time
+        else if (ready_queue[i]->priority == ready_queue[best_idx]->priority) {
+            if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
+                best_idx = i;
+            }
+        }
+    }
+
+    return best_idx;
 }

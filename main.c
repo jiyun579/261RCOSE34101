@@ -1,5 +1,58 @@
 #include "header.h"
 
+int selected_algorithm = 0;
+int time_quantum = 0;
+
+void Config() {
+
+    printf("\n==========================================================\n");
+    printf("          CPU Scheduling Simulator Configuration          \n");
+    printf("==========================================================\n");
+    printf(" 1. FCFS (First Come First Served)\n");
+    printf(" 2. SJF (Shortest Job First) - Non-Preemptive\n");
+    printf(" 3. SJF (Shortest Job First) - Preemptive\n");
+    printf(" 4. Priority Scheduling - Non-Preemptive\n");
+    printf(" 5. Priority Scheduling - Preemptive\n");
+    printf(" 6. RR (Round Robin)\n");
+    printf("==========================================================\n");
+    
+    // 알고리즘 선택
+    while (1) {
+        printf("Enter the algorithm number to perform. (1 ~ 6): ");
+        if (scanf("%d", &selected_algorithm) == 1) {
+            if (selected_algorithm >= 1 && selected_algorithm <= 6) {
+                break; 
+            }
+        }
+
+        while (getchar() != '\n'); // 입력 버퍼 비움
+        printf("[Invalid input! Please enter a number between 1 and 6.]\n");
+    }
+
+    // Round Robin을 선택한 경우
+    if (selected_algorithm == 6) {
+        while (1) {
+            printf("Enter the time quantum for Round Robin. (Recommended: 2 to 5): ");
+            if (scanf("%d", &time_quantum) == 1 && time_quantum > 0) {
+                break;
+            }
+
+            while (getchar() != '\n'); // 입력 버퍼 비움
+            printf("[Invalid input! Please enter a natural number greater than 0.]\n");
+        }
+    }
+
+    printf("[System configuration complete!]\n");
+    if (selected_algorithm == 6) {
+        printf("[Set up Results] Algorithm: Round Robin, Time Quantum: %d sec\n", time_quantum);
+    } 
+    else {
+        const char* algo_names[] = {"", "FCFS", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Preemptive Priority"};
+        printf("[Set up Results] Algorithm: %s\n", algo_names[selected_algorithm]);
+    }
+    printf("==========================================================\n\n");
+}
+
 int main() {
 
     srand((unsigned int)time(NULL));
@@ -9,27 +62,14 @@ int main() {
     printf("\nEnter the number of processes you want to create (Recommended: 5 to 10): ");
     scanf("%d", &process_count);
 
-    Process* primary_processes = (Process*)malloc(sizeof(Process) * process_count);
+    Process* proc_list = (Process*)malloc(sizeof(Process) * process_count);
 
     // 프로세스 생성 및 출력
-    Create_Process(primary_processes, process_count);
-    Print_Process_List(primary_processes, process_count);
+    Create_Process(proc_list, process_count);
+    Print_Process_List(proc_list, process_count);
 
     // 알고리즘 설정
     Config();
-
-    // 5. 큐(Queue) 역시 글로벌이 아닌 main의 지역 포인터 배열로 선언 가능!
-    Process** ready_queue = (Process**)malloc(sizeof(Process*) * process_count);
-    int ready_count = 0;
-
-    // ----------------------------------------------------
-    // TODO: 여기에 Schedule(primary_processes, ready_queue, &ready_count, process_count...) 
-    // 형태로 매개변수를 넘겨주며 시뮬레이션을 돌리면 됩니다.
-    // ----------------------------------------------------
-
-    // 6. 프로그램 종료 전 동적 할당한 메모리 해제 (C언어 필수 매너)
-    free(primary_processes);
-    free(ready_queue);
 
     return 0;
 }
