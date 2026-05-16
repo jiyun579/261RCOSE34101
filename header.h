@@ -51,12 +51,17 @@ void Enqueue_Ready(Process* ready_queue[], int* ready_count, Process* proc);
 Process* Dequeue_Ready(Process* ready_queue[], int* ready_count, int target_idx);
 void Enqueue_Waiting(Process* waiting_queue[], int* waiting_count, Process* proc);
 void Dequeue_Waiting_Process(Process* waiting_queue[], int* waiting_count, int target_pid);
-int Dequeue_idx_FCFS(Process* ready_queue[], int* ready_count);
-int Dequeue_idx_SJF(Process* ready_queue[], int* ready_count);
-int Dequeue_idx_Priority(Process* ready_queue[], int* ready_count);
+Process* Dequeue_Ready_FCFS(Process* ready_queue[], int* ready_count);
+Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count);
+Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count);
 
 // scheduler.c
 void FCFS(Process* primary_processes, int process_count);
+void SJF_Non_Preemptive(Process* primary_processes, int process_count);
+void SJF_Preemptive(Process* primary_processes, int process_count);
+void Priority_Non_Preemptive(Process* primary_processes, int process_count);
+void Priority_Preemptive(Process* primary_processes, int process_count);
+void RR(Process* primary_processes, int process_count, int time_quantum);
 
 // evaluation.c
 

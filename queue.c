@@ -49,8 +49,8 @@ void Dequeue_Waiting_Process(Process* waiting_queue[], int* waiting_count, int t
 
 // FCFS
 // arrival_time -> priority
-int Dequeue_idx_FCFS(Process* ready_queue[], int* ready_count) {
-    if (*ready_count == 0) return -1;
+Process* Dequeue_Ready_FCFS(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return NULL;
 
     int best_idx = 0;
 
@@ -67,13 +67,13 @@ int Dequeue_idx_FCFS(Process* ready_queue[], int* ready_count) {
         }
     }
 
-    return best_idx;
+    return Dequeue_Ready(ready_queue, ready_count, best_idx);
 }
 
 // SJF
 // remaining_cpu -> arrival_time -> priority
-int Dequeue_idx_SJF(Process* ready_queue[], int* ready_count) {
-    if (*ready_count == 0) return -1;
+Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return NULL;
 
     int best_idx = 0;
 
@@ -96,13 +96,13 @@ int Dequeue_idx_SJF(Process* ready_queue[], int* ready_count) {
         }
     }
 
-    return best_idx;
+    return Dequeue_Ready(ready_queue, ready_count, best_idx);
 }
 
 // Priority
 // priority -> arrival_time
-int Dequeue_idx_Priority(Process* ready_queue[], int* ready_count) {
-    if (*ready_count == 0) return -1;
+Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count) {
+    if (*ready_count == 0) return NULL;
 
     int best_idx = 0;
 
@@ -119,5 +119,5 @@ int Dequeue_idx_Priority(Process* ready_queue[], int* ready_count) {
         }
     }
 
-    return best_idx;
+    return Dequeue_Ready(ready_queue, ready_count, best_idx);
 }
