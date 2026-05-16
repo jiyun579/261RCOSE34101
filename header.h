@@ -43,8 +43,8 @@ extern int time_quantum;
 void Config();
 
 // process.c
-void Create_Process(Process proc_list[], int count);
-void Print_Process_List(Process proc_list[], int count);
+void Create_Process(Process* proc_list[], int count);
+void Print_Process_List(Process* proc_list[], int count);
 
 // queue.c
 void Enqueue_Ready(Process* ready_queue[], int* ready_count, Process* proc);
@@ -56,12 +56,12 @@ Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count);
 Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count);
 
 // scheduler.c
-void FCFS(Process* primary_processes, int process_count);
-void SJF_Non_Preemptive(Process* primary_processes, int process_count);
-void SJF_Preemptive(Process* primary_processes, int process_count);
-void Priority_Non_Preemptive(Process* primary_processes, int process_count);
-void Priority_Preemptive(Process* primary_processes, int process_count);
-void RR(Process* primary_processes, int process_count, int time_quantum);
+void FCFS(Process* proc_list[], int process_count);
+void SJF_Non_Preemptive(Process* proc_list[], int process_count);
+void SJF_Preemptive(Process* proc_list[], int process_count);
+void Priority_Non_Preemptive(Process* proc_list[], int process_count);
+void Priority_Preemptive(Process* proc_list[], int process_count);
+void RR(Process* proc_list[], int process_count, int time_quantum);
 
 // evaluation.c
 

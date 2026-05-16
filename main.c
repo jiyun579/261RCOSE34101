@@ -62,7 +62,11 @@ int main() {
     printf("\nEnter the number of processes you want to create (Recommended: 5 to 10): ");
     scanf("%d", &process_count);
 
-    Process* proc_list = (Process*)malloc(sizeof(Process) * process_count);
+    Process** proc_list = (Process**)malloc(sizeof(Process*) * process_count);
+    for (int i = 0; i < process_count; i++) {
+    // 각 칸마다 실제 Process 구조체를 공간 할당해줍니다.
+    proc_list[i] = (Process*)malloc(sizeof(Process));
+    }
 
     // 프로세스 생성 및 출력
     Create_Process(proc_list, process_count);
@@ -70,6 +74,30 @@ int main() {
 
     // 알고리즘 설정
     Config();
+
+    // 시뮬레이션 시작
+    switch (selected_algorithm) {
+    case 1:
+        FCFS(proc_list, process_count);
+        break;
+    case 2:
+        SJF_Non_Preemptive(proc_list, process_count);
+        break;
+    case 3:
+        SJF_Preemptive(proc_list, process_count);
+        break;
+    case 4:
+        Priority_Non_Preemptive(proc_list, process_count);
+        break;
+    case 5:
+        Priority_Preemptive(proc_list, process_count);
+        break;
+    case 6:
+        RR(proc_list, process_count, time_quantum);
+        break;
+    }
+
+    free(proc_list);
 
     return 0;
 }
