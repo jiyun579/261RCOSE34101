@@ -13,9 +13,7 @@ Process* Dequeue_Ready(Process* ready_queue[], int* ready_count, int target_idx)
 
     Process* target = ready_queue[target_idx];
 
-    for (int i = target_idx + 1; i < *ready_count; i++) {
-        ready_queue[i - 1] = ready_queue[i];
-    }
+    for (int i = target_idx + 1; i < *ready_count; i++) ready_queue[i - 1] = ready_queue[i];
     (*ready_count)--;
 
     return target;
@@ -28,10 +26,11 @@ void Enqueue_Waiting(Process* waiting_queue[], int* waiting_count, Process* proc
     (*waiting_count)++;
 }
 
-// waiting queue에서 i/o 작업이 끝난 프로세스 꺼내기
+// waiting queue에서 프로세스 꺼내기
 void Dequeue_Waiting_Process(Process* waiting_queue[], int* waiting_count, int target_pid) {
     int target_idx = -1;
 
+    // 타겟 프로세스 인덱스 탐색
     for (int i = 0; i < *waiting_count; i++) {
         if (waiting_queue[i]->pid == target_pid) {
             target_idx = i;
@@ -40,38 +39,19 @@ void Dequeue_Waiting_Process(Process* waiting_queue[], int* waiting_count, int t
     }
 
     if (target_idx != -1) {
-        for (int i = target_idx + 1; i < *waiting_count; i++) {
-            waiting_queue[i - 1] = waiting_queue[i];
-        }
+        for (int i = target_idx + 1; i < *waiting_count; i++) waiting_queue[i - 1] = waiting_queue[i];
         (*waiting_count)--;
     }
+
 }
 
 // FCFS
-// arrival_time -> priority
 Process* Dequeue_Ready_FCFS(Process* ready_queue[], int* ready_count) {
     if (*ready_count == 0) return NULL;
-
-    int best_idx = 0;
-
-    for (int i = 1; i < *ready_count; i++) {
-        // arrival_time
-        if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
-            best_idx = i;
-        }
-        // priority
-        else if (ready_queue[i]->arrival_time == ready_queue[best_idx]->arrival_time) {
-            if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
-                best_idx = i;
-            }
-        }
-    }
-
-    return Dequeue_Ready(ready_queue, ready_count, best_idx);
+    return Dequeue_Ready(ready_queue, ready_count, 0);
 }
 
 // SJF
-// remaining_cpu -> arrival_time -> priority
 Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count) {
     if (*ready_count == 0) return NULL;
 
@@ -79,9 +59,7 @@ Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count) {
 
     for (int i = 1; i < *ready_count; i++) {
         // remaining_cpu
-        if (ready_queue[i]->remaining_cpu < ready_queue[best_idx]->remaining_cpu) {
-            best_idx = i;
-        }
+        if (ready_queue[i]->remaining_cpu < ready_queue[best_idx]->remaining_cpu) best_idx = i;
         else if (ready_queue[i]->remaining_cpu == ready_queue[best_idx]->remaining_cpu) {
             // arrival_time
             if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
@@ -89,9 +67,7 @@ Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count) {
             }
             // priority
             else if (ready_queue[i]->arrival_time == ready_queue[best_idx]->arrival_time) {
-                if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
-                    best_idx = i;
-                }
+                if (ready_queue[i]->priority > ready_queue[best_idx]->priority) best_idx = i;
             }
         }
     }
@@ -100,7 +76,6 @@ Process* Dequeue_Ready_SJF(Process* ready_queue[], int* ready_count) {
 }
 
 // Priority
-// priority -> arrival_time
 Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count) {
     if (*ready_count == 0) return NULL;
 
@@ -108,14 +83,10 @@ Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count) {
 
     for (int i = 1; i < *ready_count; i++) {
         // priority
-        if (ready_queue[i]->priority > ready_queue[best_idx]->priority) {
-            best_idx = i;
-        }
+        if (ready_queue[i]->priority > ready_queue[best_idx]->priority) best_idx = i;
         // arrival_time
         else if (ready_queue[i]->priority == ready_queue[best_idx]->priority) {
-            if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) {
-                best_idx = i;
-            }
+            if (ready_queue[i]->arrival_time < ready_queue[best_idx]->arrival_time) best_idx = i;
         }
     }
 

@@ -9,6 +9,7 @@
 
 // 프로세스 상태
 typedef enum {
+    STATE_NEW,
     STATE_READY,
     STATE_RUNNING,
     STATE_WAITING,
@@ -24,12 +25,15 @@ typedef struct {
 
     int cpu_burst; // CPU 총 시간
     int remaining_cpu; // 남은 CPU 시간
+    int terminated_time; // 종료 시간
 
     int io_count; // I/O 횟수
-    int io_burst; // I/O 총 실행 시간
+    int remaining_io_count; // 남은 I/O 횟수
+    int total_io_burst; // I/O 총 실행 시간
     int remaining_io; // 남은 I/O 시간
-    int io_start; // 첫번째 I/O 시작까지 걸리는 시간 (CPU를 최소 1초 사용한 후 발생, 종료되기 2초 전엔 발생하도록 설정)
-    int io_end; // 실행 중인 I/O 종료 시간 (실행 중이 아닐 때 -1)
+    int current_io_burst; // 현재 I/O 실행 시간
+    int each_io_end; // 현재 I/O 종료 시간
+    int io_interval; // I/O 실행 간격
 
     int turn_around_time; // 프로세스 도착 ~ 실행 완료까지 걸린 시간
     int waiting_time; // 프로세스 도착 후 실행 완료까지 총 대기 시간
@@ -64,5 +68,6 @@ void Priority_Preemptive(Process* proc_list[], int process_count);
 void RR(Process* proc_list[], int process_count, int time_quantum);
 
 // evaluation.c
+void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]);
 
 #endif // SCHEDULER_H
