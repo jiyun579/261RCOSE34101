@@ -23,18 +23,16 @@ void Create_Process(Process* proc_list[], int count) {
         proc_list[i]->remaining_io_count = proc_list[i]->io_count;
         // I/O가 발생하는 경우
         if (proc_list[i]->io_count > 0) {
-            proc_list[i]->total_io_burst = (rand() % 4) + 2; // I/O 총 시간: 2 ~ 5 랜덤
-            proc_list[i]->current_io_burst = 0;
-            proc_list[i]->each_io_end = 0;
-            proc_list[i]->remaining_io = proc_list[i]->total_io_burst;
+            proc_list[i]->io_burst = (rand() % 4) + 2; // I/O 총 시간: 2 ~ 5 랜덤
+            proc_list[i]->current_io = 0;
+            proc_list[i]->remaining_io = proc_list[i]->io_burst;
             proc_list[i]->io_interval = proc_list[i]->cpu_burst / (proc_list[i]->io_count + 1); // I/O 실행 간격: CPU 시간에 따라 균등한 간격
             if (proc_list[i]->io_interval == 0) proc_list[i]->io_interval = 1;
         }
         // I/O가 발생하지 않는 경우
         else {
-            proc_list[i]->total_io_burst = 0;
-            proc_list[i]->current_io_burst = 0;
-            proc_list[i]->each_io_end = 0;
+            proc_list[i]->io_burst = 0;
+            proc_list[i]->current_io = 0;
             proc_list[i]->remaining_io = 0;
             proc_list[i]->io_interval = 0;
         }
@@ -58,7 +56,7 @@ void Print_Process_List(Process* proc_list[], int count) {
                 proc_list[i]->cpu_burst,
                 proc_list[i]->priority,
                 proc_list[i]->io_count,
-                proc_list[i]->total_io_burst);
+                proc_list[i]->io_burst);
     }
     printf("=================================================================================\n");
 }

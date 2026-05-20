@@ -29,10 +29,9 @@ typedef struct {
 
     int io_count; // I/O 횟수
     int remaining_io_count; // 남은 I/O 횟수
-    int total_io_burst; // I/O 총 실행 시간
+    int io_burst; // I/O 총 실행 시간
     int remaining_io; // 남은 I/O 시간
-    int current_io_burst; // 현재 I/O 실행 시간
-    int each_io_end; // 현재 I/O 종료 시간
+    int current_io; // 현재 I/O 실행 시간
     int io_interval; // I/O 실행 간격
 
     int turn_around_time; // 프로세스 도착 ~ 실행 완료까지 걸린 시간
