@@ -14,6 +14,7 @@ void Create_Process(Process* proc_list[], int count) {
         // 2. CPU 정보
         proc_list[i]->cpu_burst = (rand() % 12) + 4;    // CPU 총 시간: 4 ~ 15 랜덤
         proc_list[i]->remaining_cpu = proc_list[i]->cpu_burst;
+        proc_list[i]->time_slice = 0;
 
         // 3. I/O 정보
         int dice = rand() % 10;

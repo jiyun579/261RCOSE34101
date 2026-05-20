@@ -97,7 +97,7 @@ int main() {
         // 시뮬레이션 시작 질의 (y/n)
         char choice;
         while (1) {
-            printf("\n>>> Would you like to start the simulation? (y/n): ");
+            printf("\n>>> Would you like to start the simulation? (y / n): ");
             while (getchar() != '\n'); // 입력 버퍼 비움
             scanf("%c", &choice);
 

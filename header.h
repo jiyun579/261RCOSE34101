@@ -18,13 +18,14 @@ typedef enum {
 
 // 프로세스 정보
 typedef struct {
-    int pid; // 프로세스 ID (1부터 순차 부여)
+    int pid; // 프로세스 ID
     int arrival_time; // 도착 시간
     int priority; // 우선순위 (수가 클수록 높은 우선순위)
     ProcessState state; // 프로세스 상태
 
     int cpu_burst; // CPU 총 시간
     int remaining_cpu; // 남은 CPU 시간
+    int time_slice; // 현재 프로세스가 CPU를 사용한 시간
     int terminated_time; // 종료 시간
 
     int io_count; // I/O 횟수
