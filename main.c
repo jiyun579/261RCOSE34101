@@ -109,10 +109,10 @@ int main() {
         if (choice == 'y' || choice == 'Y') {
             switch (selected_algorithm) {
                 case 1: FCFS(proc_list, process_count); break;
-                case 2: SJF_Non_Preemptive(proc_list, process_count); break;
-                case 3: SJF_Preemptive(proc_list, process_count); break;
-                case 4: Priority_Non_Preemptive(proc_list, process_count); break;
-                case 5: Priority_Preemptive(proc_list, process_count); break;
+                case 2: Non_Preemptive_SJF(proc_list, process_count); break;
+                case 3: Preemptive_SJF(proc_list, process_count); break;
+                case 4: Non_Preemptive_Priority(proc_list, process_count); break;
+                case 5: Preemptive_Priority(proc_list, process_count); break;
                 case 6: RR(proc_list, process_count, time_quantum); break;
             }
             break;

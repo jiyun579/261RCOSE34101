@@ -43,7 +43,7 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
 
     printf("\n[ Done ] Gantt Chart\n");
 
-    int BLOCK_WIDTH = 6; 
+    int BLOCK_WIDTH = 4; 
 
     // 상단 테두리
     printf("  ");
@@ -58,7 +58,7 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
     for (int i = 0; i < block_count; i++) {
         printf("|");
         if (blocks[i].pid == 0) {
-            printf(" IDLE ");
+            printf("IDLE");
         } 
         else {
             // (PID 자릿수 대응을 위해 가변 공백 처리)

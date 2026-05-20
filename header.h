@@ -60,10 +60,10 @@ Process* Dequeue_Ready_Priority(Process* ready_queue[], int* ready_count);
 
 // scheduler.c
 void FCFS(Process* proc_list[], int process_count);
-void SJF_Non_Preemptive(Process* proc_list[], int process_count);
-void SJF_Preemptive(Process* proc_list[], int process_count);
-void Priority_Non_Preemptive(Process* proc_list[], int process_count);
-void Priority_Preemptive(Process* proc_list[], int process_count);
+void Non_Preemptive_SJF(Process* proc_list[], int process_count);
+void Preemptive_SJF(Process* proc_list[], int process_count);
+void Non_Preemptive_Priority(Process* proc_list[], int process_count);
+void Preemptive_Priority(Process* proc_list[], int process_count);
 void RR(Process* proc_list[], int process_count, int time_quantum);
 
 // evaluation.c
