@@ -7,7 +7,7 @@ typedef struct {
     int end_time;
 } GanttBlock;
 
-void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
+void Gantt_Chart(Process* proc_list[], int process_count, int gantt_chart[], int end_time) {
 
     // 총 실행 시간
     int total_time = 0;
@@ -17,8 +17,13 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
         }
     }
 
+    // 만약 시뮬레이션 타임아웃 등으로 종료 시점을 못 찾았다면 실제 수행된 누적 시간으로 대체
+    if (total_time == 0) {
+        total_time = end_time;
+    }
+
     // GanttBlock
-    GanttBlock blocks[1000];
+    GanttBlock blocks[10000];
     int block_count = 0;
 
     if (total_time > 0) {
@@ -43,7 +48,7 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
 
     printf("\n[ Done ] Gantt Chart\n");
 
-    int BLOCK_WIDTH = 4; 
+    int BLOCK_WIDTH = 6; 
 
     // 상단 테두리
     printf("  ");
@@ -58,7 +63,7 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
     for (int i = 0; i < block_count; i++) {
         printf("|");
         if (blocks[i].pid == 0) {
-            printf("IDLE");
+            printf(" IDLE ");
         } 
         else {
             // (PID 자릿수 대응을 위해 가변 공백 처리)
@@ -132,7 +137,20 @@ void gantt_chart(Process* proc_list[], int process_count, int gantt_chart[]) {
     double avg_waiting = (double)total_waiting_time / process_count;
     double avg_turnaround = (double)total_turnaround_time / process_count;
 
+    int idle_time = 0;
+    for (int i = 0; i < block_count; i++) {
+        if (blocks[i].pid == 0) {
+            idle_time += (blocks[i].end_time - blocks[i].start_time);
+        }
+    }
+    int total_sim_time = blocks[block_count - 1].end_time;
+    double cpu_utilization = 0.0;
+    if (total_sim_time > 0) {
+        cpu_utilization = ((double)(total_sim_time - idle_time) / total_sim_time) * 100.0;
+    }
+
     printf(" > Average Waiting Time       : %.2f sec\n", avg_waiting);
     printf(" > Average Turnaround Time    : %.2f sec\n", avg_turnaround);
+    printf(" > CPU Utilization            : %.2f %%\n", cpu_utilization);
     printf("===========================================================================\n\n");
 }

@@ -4,7 +4,6 @@ int selected_algorithm = 0;
 int time_quantum = 0;
 
 void Config() {
-
     printf("\n[ Settings ] Which algorithm would you like to run?\n");
     printf(" 1. FCFS (First Come First Served)\n");
     printf(" 2. SJF (Shortest Job First) - Non-Preemptive\n");
@@ -12,40 +11,40 @@ void Config() {
     printf(" 4. Priority Scheduling - Non-Preemptive\n");
     printf(" 5. Priority Scheduling - Preemptive\n");
     printf(" 6. RR (Round Robin)\n");
+    printf(" 7. Run ALL Algorithms\n");
     
-    // 1-1. 알고리즘 선택
     while (1) {
-        printf("\n>>> Enter the algorithm number to perform. (1 ~ 6): ");
+        printf("\n>>> Enter the algorithm number to perform. (1 ~ 7): "); // 7로 변경
         if (scanf("%d", &selected_algorithm) == 1) {
-            if (selected_algorithm >= 1 && selected_algorithm <= 6) {
+            if (selected_algorithm >= 1 && selected_algorithm <= 7) {
+                while (getchar() != '\n'); 
                 break; 
             }
         }
-        while (getchar() != '\n'); // 입력 버퍼 비움
-        printf("\n[ Warning ] Invalid input. Please enter a number between 1 and 6.\n");
+        while (getchar() != '\n'); 
+        printf("\n[ Warning ] Invalid input. Please enter a positive integer between 1 and 7.\n");
     }
 
-    // 1-2. Round Robin을 선택한 경우
-    if (selected_algorithm == 6) {
+    // Round Robin 혹은 전체 실행(7번)을 선택한 경우에도 타임 퀀텀이 필요하므로 조건 수정
+    if (selected_algorithm == 6 || selected_algorithm == 7) {
         while (1) {
             printf("\n>>> Enter the time quantum for Round Robin. (2 ~ 5): ");
-            if (scanf("%d", &time_quantum) == 1 && time_quantum > 0) {
-                if (time_quantum < 2 || time_quantum > 5) {
-                printf("\n[ Warning ] For realistic simulation, please enter a number between 2 and 5.\n");
-                continue;
+            if (scanf("%d", &time_quantum) == 1) {
+                if (time_quantum >=2 && time_quantum <= 5) {
+                    while (getchar() != '\n'); 
+                    break;
+                }
             }
-                break;
-            }
-            while (getchar() != '\n'); // 입력 버퍼 비움
-            printf("\n[ Warning ] Invalid input. Please enter a natural number greater than 0.\n");
+            while (getchar() != '\n'); 
+            printf("\n[ Warning ] Invalid input. Please enter a positive integer between 2 and 5.\n");
         }
     }
 
-    // 2. 알고리즘 선택 결과 출력
-    if (selected_algorithm == 6) {
+    if (selected_algorithm == 7) {
+        printf("\n[ Done ] All Algorithms with RR (TQ: %d)\n", time_quantum);
+    } else if (selected_algorithm == 6) {
         printf("\n[ Done ] Round Robin, Time Quantum: %d sec\n", time_quantum);
-    } 
-    else {
+    } else {
         const char* algo_names[] = {"", "FCFS", "Non-Preemptive SJF", "Preemptive SJF", "Non-Preemptive Priority", "Preemptive Priority"};
         printf("\n[ Done ] %s\n", algo_names[selected_algorithm]);
     }
@@ -59,15 +58,14 @@ int main() {
     int process_count = 0;
     while (1) {
         printf("\n>>> Enter the number of processes you want to create (1 ~ 10): ");
-        if (scanf("%d", &process_count) == 1 && process_count > 0) {
-            if (process_count > 10) {
-                printf("\n[ Warning ] Too many processes. Maximum limit is 10.\n");
-                continue;
+        if (scanf("%d", &process_count) == 1) {
+            if (process_count>=1 && process_count<=10) {
+                while (getchar() != '\n'); // 입력 버퍼 비움
+                break;
             }
-            break;
         }
         while (getchar() != '\n'); // 입력 버퍼 비움
-        printf("\n[ Warning ] Invalid input. Please enter a positive integer.\n");
+        printf("\n[ Warning ] Invalid input. Please enter a positive integer between 1 and 10.\n");
     }
 
     // 2. 프로세스 공간 할당
@@ -98,10 +96,13 @@ int main() {
         char choice;
         while (1) {
             printf("\n>>> Would you like to start the simulation? (y / n): ");
-            while (getchar() != '\n'); // 입력 버퍼 비움
             scanf("%c", &choice);
 
-            if (choice == 'y' || choice == 'Y' || choice == 'n' || choice == 'N') break;
+            if (choice == 'y' || choice == 'Y' || choice == 'n' || choice == 'N') {
+                while (getchar() != '\n'); // 입력 버퍼 비움
+                break;
+            }
+            while (getchar() != '\n'); // 입력 버퍼 비움
             printf("\n[ Warning ] Invalid choice. Please enter 'y' or 'n'.\n");
         }
 
@@ -114,6 +115,7 @@ int main() {
                 case 4: Non_Preemptive_Priority(proc_list, process_count); break;
                 case 5: Preemptive_Priority(proc_list, process_count); break;
                 case 6: RR(proc_list, process_count, time_quantum); break;
+                case 7: Run_All_Algorithms(proc_list, process_count, time_quantum); break;
             }
             break;
         }

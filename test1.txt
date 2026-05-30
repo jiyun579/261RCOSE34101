@@ -1,0 +1,187 @@
+Script started on 2026-05-30 06:06:17+00:00 [TERM="linux" TTY="/dev/tty1" COLUMNS="160" LINES="50"]
+[?2004hjys@2024320351:~/shared_folder/os_term_project$ exit./simulator
+[?2004l
+>>> Enter the number of processes you want to create (1 ~ 10): 4
+
+[Done] Process created.
+=================================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Priority   |   I/O_Count   |   I/O_Burst
+---------------------------------------------------------------------------------
+ P1    |      6      |       7       |       3      |       1       |       2
+ P2    |      6      |       4       |      10      |       0       |       0
+ P3    |      4      |       5       |       4      |       1       |       2
+ P4    |      7      |       5       |       2      |       0       |       0
+=================================================================================
+
+[ Settings ] Which algorithm would you like to run?
+ 1. FCFS (First Come First Served)
+ 2. SJF (Shortest Job First) - Non-Preemptive
+ 3. SJF (Shortest Job First) - Preemptive
+ 4. Priority Scheduling - Non-Preemptive
+ 5. Priority Scheduling - Preemptive
+ 6. RR (Round Robin)
+ 7. Run ALL Algorithms
+
+>>> Enter the algorithm number to perform. (1 ~ 7): 7
+
+>>> Enter the time quantum for Round Robin. (2 ~ 5): 3
+
+[ Done ] All Algorithms with RR (TQ: 3)
+
+>>> Would you like to start the simulation? (y / n): y
+
+[ 1/6 ] Running FCFS Simulation...
+[ Done ] FCFS Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P1  |  P2  |  P4  |  P3  |  P1  |
+  +------+------+------+------+------+------+------+
+  0      4      6      9      13     18     21     25
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |        10        |        19
+ P2    |      6      |       4       |         3        |         7
+ P3    |      4      |       5       |        10        |        17
+ P4    |      7      |       5       |         6        |        11
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 7.25 sec
+ > Average Turnaround Time    : 13.50 sec
+ > CPU Utilization            : 84.00 %
+===========================================================================
+
+---------------------------------------------------------------------------
+
+[ 2/6 ] Running Non-Preemptive SJF Simulation...
+[ Done ] Non-Preemptive SJF Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P2  |  P3  |  P4  |  P1  | IDLE |  P1  |
+  +------+------+------+------+------+------+------+------+
+  0      4      6      10     13     18     21     23     27
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |        12        |        21
+ P2    |      6      |       4       |         0        |         4
+ P3    |      4      |       5       |         2        |         9
+ P4    |      7      |       5       |         6        |        11
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 5.00 sec
+ > Average Turnaround Time    : 11.25 sec
+ > CPU Utilization            : 77.78 %
+===========================================================================
+
+---------------------------------------------------------------------------
+
+[ 3/6 ] Running Preemptive SJF Simulation...
+[ Done ] Preemptive SJF Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P2  |  P3  |  P4  |  P1  | IDLE |  P1  |
+  +------+------+------+------+------+------+------+------+
+  0      4      6      10     13     18     21     23     27
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |        12        |        21
+ P2    |      6      |       4       |         0        |         4
+ P3    |      4      |       5       |         2        |         9
+ P4    |      7      |       5       |         6        |        11
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 5.00 sec
+ > Average Turnaround Time    : 11.25 sec
+ > CPU Utilization            : 77.78 %
+===========================================================================
+
+---------------------------------------------------------------------------
+
+[ 4/6 ] Running Non-Preemptive Priority Simulation...
+[ Done ] Non-Preemptive Priority Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P2  |  P3  |  P1  |  P4  |  P1  |
+  +------+------+------+------+------+------+------+
+  0      4      6      10     13     16     21     25
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |        10        |        19
+ P2    |      6      |       4       |         0        |         4
+ P3    |      4      |       5       |         2        |         9
+ P4    |      7      |       5       |         9        |        14
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 5.25 sec
+ > Average Turnaround Time    : 11.50 sec
+ > CPU Utilization            : 84.00 %
+===========================================================================
+
+---------------------------------------------------------------------------
+
+[ 5/6 ] Running Preemptive Priority Simulation...
+[ Done ] Preemptive Priority Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P2  |  P3  |  P1  |  P4  |  P1  |  P4  |
+  +------+------+------+------+------+------+------+------+
+  0      4      6      10     13     16     18     22     25
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |         7        |        16
+ P2    |      6      |       4       |         0        |         4
+ P3    |      4      |       5       |         2        |         9
+ P4    |      7      |       5       |        13        |        18
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 5.50 sec
+ > Average Turnaround Time    : 11.75 sec
+ > CPU Utilization            : 84.00 %
+===========================================================================
+
+---------------------------------------------------------------------------
+
+[ 6/6 ] Running Round Robin Simulation (Time Quantum: 3)...
+[ Done ] Round Robin Simulation Finished.
+
+[ Done ] Gantt Chart
+  +------+------+------+------+------+------+------+------+------+------+
+  | IDLE |  P3  |  P1  |  P2  |  P4  |  P3  |  P1  |  P2  |  P4  |  P1  |
+  +------+------+------+------+------+------+------+------+------+------+
+  0      4      6      9      12     15     18     21     22     24     25
+
+[ Done ] Performence Evaluation
+===========================================================================
+ PID   |   Arrival   |   CPU_Burst   |   Waiting_Time   |   Turnaround_Time
+---------------------------------------------------------------------------
+ P1    |      6      |       7       |        10        |        19
+ P2    |      6      |       4       |        12        |        16
+ P3    |      4      |       5       |         7        |        14
+ P4    |      7      |       5       |        12        |        17
+---------------------------------------------------------------------------
+ > Average Waiting Time       : 10.25 sec
+ > Average Turnaround Time    : 16.50 sec
+ > CPU Utilization            : 84.00 %
+===========================================================================
+
+
+[ Done ] All Simulations Finished.
+
+[?2004hjys@2024320351:~/shared_folder/os_term_project$ exit
+[?2004lexit
+
+Script done on 2026-05-30 06:07:14+00:00 [COMMAND_EXIT_CODE="0"]

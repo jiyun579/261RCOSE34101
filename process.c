@@ -15,6 +15,7 @@ void Create_Process(Process* proc_list[], int count) {
         proc_list[i]->cpu_burst = (rand() % 12) + 4;    // CPU 총 시간: 4 ~ 15 랜덤
         proc_list[i]->remaining_cpu = proc_list[i]->cpu_burst;
         proc_list[i]->time_slice = 0;
+        proc_list[i]->terminated_time = 0;
 
         // 3. I/O 정보
         int dice = rand() % 10;
@@ -24,11 +25,11 @@ void Create_Process(Process* proc_list[], int count) {
         proc_list[i]->remaining_io_count = proc_list[i]->io_count;
         // I/O가 발생하는 경우
         if (proc_list[i]->io_count > 0) {
-            proc_list[i]->io_burst = (rand() % 4) + 2; // I/O 총 시간: 2 ~ 5 랜덤
+            proc_list[i]->io_burst = proc_list[i]->io_count * 2;
             proc_list[i]->current_io = 0;
             proc_list[i]->remaining_io = proc_list[i]->io_burst;
             proc_list[i]->io_interval = proc_list[i]->cpu_burst / (proc_list[i]->io_count + 1); // I/O 실행 간격: CPU 시간에 따라 균등한 간격
-            if (proc_list[i]->io_interval == 0) proc_list[i]->io_interval = 1;
+            if (proc_list[i]->io_interval == 0) proc_list[i]->io_interval = 2;
         }
         // I/O가 발생하지 않는 경우
         else {
@@ -60,4 +61,28 @@ void Print_Process_List(Process* proc_list[], int count) {
                 proc_list[i]->io_burst);
     }
     printf("=================================================================================\n");
+}
+
+void Reset_Process_List(Process* dest[], Process* src[], int count) {
+    for (int i = 0; i < count; i++) {
+        dest[i]->pid = src[i]->pid;
+        dest[i]->arrival_time = src[i]->arrival_time;
+        dest[i]->priority = src[i]->priority;
+        dest[i]->state = STATE_NEW;
+
+        dest[i]->cpu_burst = src[i]->cpu_burst;
+        dest[i]->remaining_cpu = src[i]->cpu_burst;
+        dest[i]->time_slice = 0;
+        dest[i]->terminated_time = 0;
+
+        dest[i]->io_count = src[i]->io_count;
+        dest[i]->remaining_io_count = src[i]->io_count;
+        dest[i]->io_burst = src[i]->io_burst;
+        dest[i]->remaining_io = src[i]->io_burst;
+        dest[i]->current_io = 0;
+        dest[i]->io_interval = src[i]->io_interval;
+
+        dest[i]->turn_around_time = 0;
+        dest[i]->waiting_time = 0;
+    }
 }
